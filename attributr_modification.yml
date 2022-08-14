@@ -1,0 +1,20 @@
+---
+- name: modify attribute
+  hosts: ad_host_name
+  vars:
+    ip_change_int: "{{item.var_vpn_ip | ipaddr('address')|ipaddr('int') }}"
+  collections:
+    - community.windows
+    - ansible.netcommon
+  tasks:
+    - name: change attributr
+      win_domain_user:
+        name: "{{item.var_usname}}"
+        #state: present
+        groups: 
+          - "{{item.var_usgroup}}"
+        groups_action: add
+        attributes:
+          msRADIUSFramedIPAddress: "{{ip_change_int}}"
+      with_items:
+        - "{{ vpn_details }}"

@@ -1,0 +1,19 @@
+---
+- name: Service Account OnBoarding
+  hosts: ad_host_name
+  collections:
+    - community.windows
+  tasks:
+    - name: Service Account Creation
+      win_domain_user:
+        name: "{{item.user_name}}"
+        upn: "{{item.user_name}}@domain.com.bh"
+        #sam_account_name: ansibletest2
+        firstname: "{{item.var_firstname}}"
+        #surname: "{{item.var_surname}}"
+        company: Al Salam Bank
+        password: "{{item.var_User_Pass}}"
+        state: present
+        path: OU=Service Accounts,OU=Administrative Resources,DC=domain,DC=com,DC=bh
+      with_items: "{{user_details}}"
+      #when: user_details is defined

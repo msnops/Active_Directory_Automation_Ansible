@@ -1,0 +1,21 @@
+---
+- name: User_Validation Before Creating
+  hosts: saprdpinf1
+  gather_facts: no
+  collections:
+    - ansible.windows
+  tasks:
+    # win_powershell:
+    #   script: User_Validation.ps1 "m.kasturi"
+    - name: Run basic PowerShell script
+      win_powershell:
+        script: |
+          # call it in your script like so:
+          $SecFile = "C:\temp\Password.txt"
+          $SecUser = "C:\temp\UserName.txt"
+          $MyCredential = New-Object -TypeName System.Management.Automation.PSCredential  -ArgumentList $SecUser, (Get-Content $SecFile | ConvertTo-SecureString)
+
+          # do other stuff
+          #sample:
+          Connect-AzureAD -credential $MyCredential
+

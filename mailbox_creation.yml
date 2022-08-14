@@ -1,0 +1,16 @@
+---
+- name: Create Mail box for new user
+  hosts: exchange_server_name
+  gather_facts: no
+  collections:
+    - ansible.windows
+    - community.windows
+  tasks:
+    - name: Create Mail Box for the users
+      script: ps1_scripts/Create_Mail_Box.ps1 "{{item.user_name}}"
+      loop: "{{ user_details }}"
+      become: yes
+      become_method: runas
+      become_flags: logon_type=interactive logon_flags=with_profile
+ 
+

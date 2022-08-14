@@ -1,0 +1,25 @@
+---
+- name: UserOnBoarding
+  gather_facts: no
+  hosts: ad_host_name
+  collections:
+    - community.windows
+  tasks:
+    - name: Creating AD Users
+      win_domain_user:
+        name: "{{item.var_firstname}} {{item.var_surname}}"
+        upn: "{{item.user_name}}@Domain.com.bh"
+        path: OU=User Resources,OU=domain Resources,DC=Domain,DC=com,DC=bh
+        firstname: "{{item.var_firstname}}"
+        surname: "{{item.var_surname}}"
+        company: Domain Bank
+        password: "{{item.var_user_pass}}"
+        password_expired: yes
+        state: present
+        groups: "{{item.var_groups}}"
+        groups_action: add
+        attributes:
+          displayName: "{{item.var_firstname}} {{item.var_surname}}"
+          #mobile: "{{item.var_telephone}}"
+          department: "{{item.userdpt}}"
+      loop: "{{user_details}}"

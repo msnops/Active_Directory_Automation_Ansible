@@ -1,0 +1,11 @@
+---
+- name: User_Validation Before Creating
+  hosts: localhost
+  #ansible_python_interpreter: "/usr/local/lib/python3.6"
+  #gather_facts: no
+  tasks:
+  - name: Using attribute mailNickname - not a collection
+    azure.azcollection.azure_rm_aduser_info:
+      attribute_name: name
+      attribute_value: "{{ user_name}}"
+      tenant: db6f33ed-e086-4eew-2233-8603fijdc023

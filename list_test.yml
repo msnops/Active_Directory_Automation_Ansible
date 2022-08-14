@@ -1,0 +1,11 @@
+---
+- name: UserOnBoarding
+  gather_facts: no
+  hosts: localhost
+  collections:
+    - community.windows
+  tasks:
+    - name: CreateUser
+      debug: 
+        msg: "{{item.surname}}"
+      loop: "{{user_details}}"

@@ -1,0 +1,18 @@
+---
+- name: Assign Static IP for VPN COnfiguration
+  hosts: ad_host_name
+  gather_facts: no
+  vars:
+    ip_change_int: "{{item.Var_VPN_IP | ipaddr('address')|ipaddr('int') }}"
+  collections:
+    - ansible.netcommon
+  tasks:
+
+    - name: change attributr
+      win_domain_user:
+        name: "{{item.Var_usname}}"
+        #state: present
+        attributes:
+          msRADIUSFramedIPAddress: "{{ip_change_int}}"
+      with_items:
+        - "{{ vpn_details }}"

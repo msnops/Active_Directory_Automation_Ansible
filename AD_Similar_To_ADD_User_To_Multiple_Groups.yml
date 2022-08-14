@@ -1,0 +1,17 @@
+- name: User Remove From Groups
+  gather_facts: no
+  hosts: ad_host_name
+  collections:
+    - community.windows
+  tasks:
+    - set_fact:
+        groups_list: "{{ user_groups| select()| list }}"
+    - name: print facts
+      debug:
+        msg: "{{ groups_list }}"
+    - name: Remove AD Users from Groups
+      win_domain_user:
+        name: "{{user_to_added_to_groups}}"
+        state: present
+        groups: "{{groups_list}}"
+        groups_action: add

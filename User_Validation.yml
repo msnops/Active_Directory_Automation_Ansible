@@ -1,0 +1,17 @@
+---
+- name: User_Validation Before Creating
+  hosts: ad_host_name
+  gather_facts: no
+  collections:
+    - ansible.windows
+  tasks:
+    # win_powershell:
+    #   script: User_Validation.ps1 "m.kasturi"
+    - name: Run basic PowerShell script
+      script: ps1_scripts/User_Validation.ps1 "{{ item.UserList }}"
+      loop: "{{ user_data }}"
+
+
+    #- name: Save the result of 'whoami' in 'whoami_out'
+    #  win_shell: "powershell.exe User_Validation.ps1"
+    #  register: whoami_out     

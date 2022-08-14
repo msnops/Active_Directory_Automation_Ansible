@@ -1,0 +1,18 @@
+---
+- name: UserSearch
+  gather_facts: no
+  hosts: ad_host_name
+  collections:
+    - community.windows
+  tasks:
+    - name: Search AD Users
+      win_domain_user:
+        name: "{{ user_name }}"
+        state: query
+      register: user_details_new
+
+    - name: set groups as a host facts to use in next template
+      set_stats:
+        data: 
+          user_groups: "{{ user_details_new.groups|replace( 'CN=Domain Users,CN=Users,DC=domain,DC=com,DC=bh', '' ) }}"
+

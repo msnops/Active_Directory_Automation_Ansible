@@ -1,0 +1,14 @@
+---
+- name: Add User To Groups
+  gather_facts: no
+  hosts: ad_host_name
+  collections:
+    - community.windows
+  tasks:
+    - name: "Add Members to new group"
+      win_domain_group_membership:
+        name: "{{ item.var_group }}"
+        domain_server: "{{ item.dc_name }}"
+        members: "{{ item.user_name }}"
+        state: present
+      loop: "{{user_details}}"

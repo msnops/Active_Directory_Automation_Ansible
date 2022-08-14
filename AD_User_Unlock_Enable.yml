@@ -1,0 +1,25 @@
+---
+- name: UserOnBoarding
+  gather_facts: no
+  hosts: ad_host_name
+  collections:
+    - community.windows
+  tasks:
+    - name: Modify AD Users
+      win_domain_user:
+        name: "{{item.user_name}}"
+        enabled: yes
+        account_locked: no
+        upn: "{{item.user_name}}@domain.com.bh"
+        state: present
+      loop: "{{user_details}}"
+    - name: Change Password for AD Users
+      win_domain_user:
+        name: "{{item.user_name}}"
+        upn: "{{item.user_name}}@domain.com.bh"
+        state: present
+        password: "{{item.var_user_pass}}"
+        password_expired: no
+      when: item.var_user_pass is defined
+      loop: "{{user_details}}"
+      

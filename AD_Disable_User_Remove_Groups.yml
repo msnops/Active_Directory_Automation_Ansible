@@ -1,0 +1,21 @@
+- name: User Remove From Groups
+  gather_facts: no
+  hosts: ad_host_name
+  collections:
+    - community.windows
+  tasks:
+    - set_fact:
+        groups_list: "{{ user_groups| select()| list }}"
+    - name: print facts
+      debug:
+        msg: "{{ groups_list }}"
+    - name: Remove AD Users from Groups
+      win_domain_user:
+        name: "{{user_name}}"
+        state: present
+        enabled: no
+        groups: "{{groups_list}}"
+        groups_action: remove
+    - name: Ensure The server is in right OU
+      win_shell: Get-ADUser -Identity "{{user_name}}" | Move-ADObject -TargetPath "OU=Disabled,OU=Domain Users,DC=domain,DC=com,DC=bh"
+

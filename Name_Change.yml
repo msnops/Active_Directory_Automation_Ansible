@@ -1,0 +1,13 @@
+---
+- name: UserOnBoarding
+  hosts: ad_host_name
+  gather_facts: false
+  collections:
+    - community.windows
+    - ansible.windows
+  tasks:
+    - name: Modify User Name
+      win_powershell:
+        script: |
+          Get-ADUser "{{item.user_name}}" | Rename-ADObject -NewName "{{item.var_firstname}} {{item.var_surname}}"
+      with_items: "{{user_details}}"

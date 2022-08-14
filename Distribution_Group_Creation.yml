@@ -1,0 +1,15 @@
+---
+- name: Create new Distribution Group
+  hosts: exchange_server_name
+  gather_facts: no
+  collections:
+    - ansible.windows
+    - community.windows
+  tasks:
+    - name: Create New Distribution Group
+      script: ps1_scripts/Create_Mail_Distribution_Group_New.ps1 "{{group_name}}" "{{ group_aliace_name }}" "{{ group_members }}" "{{ group_owner }}"
+      become: yes
+      become_method: runas
+      become_flags: logon_type=interactive logon_flags=with_profile
+ 
+

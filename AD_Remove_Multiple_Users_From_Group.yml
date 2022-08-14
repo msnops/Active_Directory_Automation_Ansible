@@ -1,0 +1,12 @@
+- name: User Remove From Groups
+  gather_facts: no
+  hosts: ad_host_name
+  collections:
+    - community.windows
+  tasks:
+    - name: Remove AD Users from Groups
+      win_domain_group_membership:
+        name: "{{ item[0].var_group }}"
+        members: "{{ item.user_name }}"
+        state: absent
+      with_nested: "{{user_details}}"
